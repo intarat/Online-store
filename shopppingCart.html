@@ -12,20 +12,26 @@
         <div id="app">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Online Store</a>
+                    <a class="navbar-brand" href="#">Painterparadise</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item" v-on:click="ShowHomePage">
+                            <li class="nav-item" v-on:click="ShowHomepage">
                                 <a class="nav-link active" aria-current="page" href="#">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Promotions</a>
+                            <li class="nav-item" v-on:click="ShowBrushPage">
+                                <a class="nav-link" href="">Brush</a>
                             </li>
                             <li class="nav-item" v-on:click="ShowMyCart">
-                                <a class="nav-link" href="#">My Cart ({{countitem}})</a>
+                                <a class="nav-link" href="#">Tools</a>
+                            </li>
+                            <li class="nav-item" v-on:click="ShowMyCart">
+                                <a class="nav-link" href="#">Paint</a>
+                            </li>
+                            <li class="nav-item" v-on:click="ShowMyCart">
+                                <a class="nav-link" href="#">View cart ({{countitem}})<i class="fa fa-cart-arrow-down"></i></a>
                             </li>
 
                         </ul>
@@ -36,8 +42,34 @@
                     </div>
                 </div>
             </nav>
-            <div class="container" style="margin-top : 30px;" v-if="product_page">
-                Products ::
+
+            <div class="container" style="margin-top : 30px;" v-if="Homepage">
+                Promotion 
+                <hr/>
+                <div class="home container">
+                    <div class="row">
+                        <div class="col-md-12 pt-5">
+                            <div class="row">
+                                <div class="col">
+                                    <img class='d-block w-100' src="image/Many brush.jpg" width="200" height="400">
+                                </div>
+                                <div class="col">
+                                    <h2>Get discount at your first purchase and more benefits!</h2>
+                                    <p></p>
+                                    <a class = 'btn btn-primary'>Browse our top product</a></br>
+                                    <p></p>
+                                    <a class = 'btn btn-warning'>Learn more</a>
+                                </div>
+                              </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="container" style="margin-top : 30px;" v-if="Brush_page">
+                Products 
                 <hr/>
                 <div class="home container">
                     <div class="row">
@@ -51,7 +83,7 @@
             </div>
 
             <div class="container" style="margin-top : 30px;" v-if="cart_page">
-                My Cart ::
+                My Cart 
                 <hr/>
                 <div class="home container">
                     <div class="row">
@@ -59,7 +91,11 @@
                             <CartItem v-for="item in cart" :item="item" :key="item.id" />
                         </div>
                     </div>
+                    
                 </div>
+                
+
+                
             </div>
         </div>
 
@@ -87,7 +123,8 @@
     </template>
 
     <template id="cartitem-template">
-        <div>{{item.name}} - {{item.count}}</div>
+        <div>{{item.name}} - {{item.count}} total $ {{item.price * item.count}}&emsp;<button  @click="Delmanage(item.id)">Remove</button></br></div>
+        
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -100,45 +137,45 @@
             data: function() {
                 return {
                     
-                    product_page: true,
+                    Brush_page: true,
                     cart_page: false,
 
                     products: [{
                         id: 1,
-                        name: "Chelsea Shoes",
+                        name: "Brush-01",
                         price: 200,
                         shortdesc: "Best Drip in the Market",
-                        url: "images/chelsea-shoes.png"
+                        url: "image/Many brush.jpg"
                     }, {
                         id: 2,
-                        name: "Kimono",
-                        price: 50,
+                        name: "Brush-02",
+                        price: 500,
                         shortdesc: "Classy, Stylish, Dope",
-                        url: "images/kimono.png"
+                        url: "image/Many brush.jpg"
                     }, {
                         id: 3,
-                        name: "Watch",
+                        name: "Brush-03",
                         price: 2500,
                         shortdesc: "Elegance built in",
-                        url: "images/rolex.png"
+                        url: "image/Many brush.jpg"
                     }, {
                         id: 4,
-                        name: "Wallet",
+                        name: "Brush-04",
                         price: 80,
                         shortdesc: "Sleek, Trendy, Clean",
-                        url: "images/wallet.png"
+                        url: "image/Many brush.jpg"
                     }, {
                         id: 5,
-                        name: "Lady Handbags",
+                        name: "Brush-05",
                         price: 230,
                         shortdesc: "Fabulous, Exotic, Classy",
-                        url: "images/handbag.png"
+                        url: "image/Many brush.jpg"
                     }, {
                         id: 6,
-                        name: "Casual Shirts",
+                        name: "Brush-06",
                         price: 30,
                         shortdesc: "Neat, Sleek, Smart",
-                        url: "images/shirt.png"
+                        url: "image/Many brush.jpg"
                     }],
 
                     cart: []
@@ -156,7 +193,6 @@
                     
                     //Check if this product already in the cart
                     item = this.cart.find(product => product.id == id)
-
                     if (item) { // if this product already in the cart
                         item.count += 1
                     } else {
@@ -164,6 +200,7 @@
                         this.cart.push({
                             id: item.id,
                             name: item.name,
+                            price: item.price,
                             count: 1
                         })
                     }
@@ -172,13 +209,36 @@
 
                 ShowMyCart: function() {
                     this.cart_page = true
-                    this.product_page = false
+                    this.Brush_page = false
+                    this.Homepage = false
                 },
 
-                ShowHomePage: function() {
-                    this.product_page = true
+                ShowBrushPage: function() {
+                    this.Brush_page  = true
                     this.cart_page = false
+                    this.Homepage = false
+                },  
+
+                ShowHomepage: function(){
+                    this.Homepage = true
+                    this.Brush_page = false
+                    this.cart_page = false
+
+                },
+                Delmanage: function(id){
+
+                    console.log(this.products)
+                    console.log(id)
+
+                    item = this.cart.find(product => product.id == id)
+                    if (item){
+                        item.count -= 1
+                    }else {
+                        return 1
+                    }
                 }
+            
+
             },
 
             computed: {
@@ -191,7 +251,11 @@
                 }
             }
 
+
+
         })
+
+        
 
         app.component('Product', {
             data: function() {
@@ -206,14 +270,20 @@
                 }
 
             },
+
+           
+
         });
 
         app.component('Cartitem', {
-            props: ['item'],
+            props: ['item','A'],
             template: '#cartitem-template',
         });
 
         app.mount("#app")
+
+
+
     </script>
 
 
